@@ -1,0 +1,26 @@
+
+.container {
+  text-align: center;
+  margin: 20px;
+}
+
+.img-container {
+display: flex;
+flex-wrap: wrap;
+justify-content:center
+}
+input {
+  margin-left: 5px;
+  margin-top: 5px;
+}
+
+button {
+  padding: 10px;
+  background:orange;
+  color:white;
+  font-size:18px;
+  border-radius:10px;
+  margin-top: 5px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
