@@ -1,4 +1,5 @@
 import React from 'react'
+import FormInput from './formInput';
 
 class Form extends React.Component {
     constructor() {
@@ -21,6 +22,7 @@ class Form extends React.Component {
     this.predict = this.predict.bind(this)
     this.handleChange = this.handleChange.bind(this)
     }
+    
     handleChange(event) {
         console.log(event.target.name)
         this.setState({
@@ -44,6 +46,7 @@ class Form extends React.Component {
         .then(data => this.setState({
             apiPredictionData: data
         }))
+
     }
 
 
@@ -61,32 +64,19 @@ class Form extends React.Component {
            catch(err) {
             console.log(err)
            }
+
+        let i = 1
+        let forms = []
+        for(let key in this.state) {
+            if (i++ < 12){
+                forms.push(<FormInput key={i} name={key} handleChange={this.handleChange}/>)
+            }
+        }
         return(
 
             <div className="form-container">
                 <form>
-                    <input type="text" name="passengerId" placeholder="passenger id"
-                    onChange={this.handleChange} />
-                    <input type="text" name="pclass" placeholder="Pclass"
-                    onChange={this.handleChange} />
-                    <input type="text" name="sexMale" placeholder="SexMale"
-                    onChange={this.handleChange} />
-                    <input type="text" name="sexFemale" placeholder="sexFemale"
-                    onChange={this.handleChange} />
-                    <input type="text" name="age" placeholder="age"
-                    onChange={this.handleChange} />
-                    <input type="text" name="sibSp" placeholder="sibSp"
-                    onChange={this.handleChange} />
-                    <input type="text" name="parch" placeholder="parch"
-                    onChange={this.handleChange} />
-                    <input type="text" name="fare" placeholder="fare"
-                    onChange={this.handleChange} />
-                    <input type="text" name="embarkedS" placeholder="embarkedS"
-                    onChange={this.handleChange} />
-                    <input type="text" name="embarkedC" placeholder="embarkedC"
-                    onChange={this.handleChange} />
-                    <input type="text" name="embarkedQ" placeholder="embarkedQ"
-                    onChange={this.handleChange} />
+                    {forms}
                 </form>
                 {!predicted ? <h1 style={{color: 'red'}}>Sorry {gender} was not able to make it</h1>: <h1 style={{color: 'green'}}>{gender} survived</h1> }
                 <button onClick={this.predict}>Predict</button>
