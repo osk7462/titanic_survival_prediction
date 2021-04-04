@@ -10,7 +10,7 @@ class App extends React.Component {
     super()
     this.state = {
         isLoading: true,
-        apiExploraoryData: {},
+        response: {},
     };
 }
 
@@ -19,22 +19,21 @@ class App extends React.Component {
         fetch("/api")
         .then(response => response.json())
         .then(data => this.setState({
-            apiExploraoryData: data,
-            isLoading: false
+            response: data
         }))
     }
 
 
     render() {
-        console.log("from rneder")
-        let mediaurl = ""
-        mediaurl += this.state.apiExploraoryData.figures
-        mediaurl = mediaurl.split(',')
-        const figures = mediaurl.map(url => {
-            return(
-            <Img url={url} />
-            )
-        })
+        console.log("from rneder :" + this.state.apiExploraoryData)
+        // let mediaurl = ""
+        // mediaurl += this.state.apiExploraoryData.figures
+        // mediaurl = mediaurl.split(',')
+        // const figures = mediaurl.map(url => {
+        //     return(
+        //     <Img url={url} />
+        //     )
+        // })
         return(
 
             <div className="container">
@@ -45,7 +44,7 @@ class App extends React.Component {
               <hr/>
                 <h2 >Exploratory Data Analysis</h2>
                 <div className="img-container">
-                    {figures}
+                    {/* {figures} */}
                 </div>
                 <br/>
             </div>

@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import json
-import pathlib
 import os
 from pandas.plotting import scatter_matrix
 from sklearn.model_selection import train_test_split
@@ -15,17 +14,20 @@ import sys
 
 def get_path():
     new_path = "response_data"
-    my_path = pathlib.Path(__file__).parent.absolute()
+    my_path = os.path.dirname(os.path.realpath(__file__))
+    # my_path = os.path.join(my_path, 'python')
     try:
-        my_path = os.path.join(my_path, str(os.mkdir(new_path)))
+        my_path = os.path.join(my_path, str(os.mkdir(my_path +"/"+ new_path)))
+        
     except OSError:
+        # print(OSError.messageprint(my_path))
         my_path = os.path.join(my_path, new_path)
     return my_path
 
 
 def load_data(server_route):
-    get_path()
-    df = pd.read_csv("titanic.csv")
+    path = get_path()
+    df = pd.read_csv("./python/titanic.csv".format(path))
     nan_value = str(df.isna().sum())
     df['Age'] = df['Age'].fillna(df['Age'].mean())
     df.dropna(subset=['Embarked'], inplace=True)
@@ -41,11 +43,11 @@ def load_data(server_route):
     figure = []
     for col in num_cols:
         df.hist(column=col)
-        plt.savefig('{}/{}.png'.format(get_path(), str(col)))
+        plt.savefig('{}/{}.png'.format(path, str(col)))
         figure.append('{}/{}.png'.format(server_route, str(col)))
     scatter_matrix(df[num_cols], figsize=(50, 50))
-    plt.savefig("{}/{}.png".format(get_path(), "scatter_matrix"))
-    figure.append("http://localhost:3000/fig{}.png,,".format(get_path()))
+    plt.savefig("{}/{}.png".format(path, "scatter_matrix"))
+    figure.append("{}/{}.png".format(server_route, "scatter_matrix"))
     obj_cols = df.select_dtypes([np.object]).columns.tolist()
     for col in obj_cols:
         df[col].value_counts().plot(kind='bar')
@@ -122,15 +124,15 @@ def get_exploratory_data(server_route):
 
 
 if __name__ == '__main__':
-    if sys.argvs[0] == "get_exploratory_data":
-        print(json.dumps({"status": "ok", "data": get_exploratory_data(sys.argvs[1])}))
-    elif sys.argvs[0] == "make_prediction":
+    if sys.argv[1] == "get_exploratory_data":
+        print(json.dumps({"status": "ok", "data": get_exploratory_data(sys.argv[2])}))
+    elif sys.argv[0] == "make_prediction":
         user_input = []
         status = 200
-        for i in range(2, 13):
+        for i in range(3, 14):
             try:
                 user_input.append(float(sys.argv[i]))
-                print(json.dumps({"status": status, "predicted_value": make_prediction(user_input, sys.argvs[1])}))
+                print(json.dumps({"status": status, "predicted_value": make_prediction(user_input, sys.argv[1])}))
             except TypeError:
                 status = 404
                 print(json.dumps({"status": status}))
