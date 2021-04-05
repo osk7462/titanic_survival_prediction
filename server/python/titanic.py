@@ -110,9 +110,7 @@ def make_prediction(user_input, server_route):
 
     a = np.asarray(user_input).reshape(1, -1)
     predicted_value = loaded_model.predict(a)
-    return json.dumps({
-        "predicted_value": str(predicted_value[0])
-    })
+    return str(predicted_value[0])
 
 
 def get_exploratory_data(server_route):
@@ -126,13 +124,12 @@ def get_exploratory_data(server_route):
 if __name__ == '__main__':
     if sys.argv[1] == "get_exploratory_data":
         print(json.dumps({"status": "ok", "data": get_exploratory_data(sys.argv[2])}))
-    elif sys.argv[0] == "make_prediction":
+    elif sys.argv[1] == "make_prediction":
         user_input = []
         status = 200
         for i in range(3, 14):
             try:
                 user_input.append(float(sys.argv[i]))
-                print(json.dumps({"status": status, "predicted_value": make_prediction(user_input, sys.argv[1])}))
             except TypeError:
                 status = 404
-                print(json.dumps({"status": status}))
+        print(json.dumps({"status": status, "predicted_value": make_prediction(user_input, sys.argv[2] )       }))

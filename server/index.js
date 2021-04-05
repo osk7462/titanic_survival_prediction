@@ -4,7 +4,7 @@ var app = express();
 let port = 4002
 route = "http://localhost:" + port
 console.log(route)
-app.use(express.static('image'))
+app.use(express.static('./python/response_data'))
 
 app.get('/api', (req, res) => {
 	let response = ""
@@ -27,11 +27,11 @@ app.get('/api', (req, res) => {
 
 
 app.get('/api/predict', (req, res) =>  {
-	let apiData = {}
-	let apiDatum
-
+	let response = ""
 	var spawn = require("child_process").spawn;
 	var process = spawn('python',["./python/titanic.py",
+							"make_prediction",
+							route,
 							req.query.v1,
 							req.query.v2,
 							req.query.v3,
@@ -45,16 +45,11 @@ app.get('/api/predict', (req, res) =>  {
 							req.query.v11
 						] );
 	process.stdout.on('data', data => {
-		apiDatum = data.toString()
-		console.log("from predict: " + apiDatum)
+		response = data.toString()
 	} )
 
 	process.on('close', () => {
-		// apiDatum = apiDatum.split(":")
-		// apiData[apiDatum[0]] = apiDatum[1]
-		// console.log(apiData[apiDatum[0]])
-		// res.send(apiData)
-		console.log("from : " + apiDatum)
+		res.send(JSON.parse(response))
 		});
 		
 })
