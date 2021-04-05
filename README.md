@@ -7,4 +7,3 @@
 ![alt text](https://github.com/osk7462/titanic_survival_prediction/blob/main/demo/6.png?raw=true)
 ![alt text](https://github.com/osk7462/titanic_survival_prediction/blob/main/demo/7.png?raw=true)
 ![alt text](https://github.com/osk7462/titanic_survival_prediction/blob/main/demo/8.png?raw=true)
-![alt text](https://github.com/osk7462/titanic_survival_prediction/blob/main/demo/9.png?raw=true)
